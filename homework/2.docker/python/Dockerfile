@@ -11,4 +11,4 @@ ADD . /app
 
 EXPOSE 8000
 
-ENTRYPOINT python /app/manage.py runserver 172.16.83.13:8000
+ENTRYPOINT python /app/app.py runserver 172.16.83.13:8000
