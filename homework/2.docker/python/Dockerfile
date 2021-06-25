@@ -9,6 +9,6 @@ RUN pip install Werkzeug==1.0.1
 
 ADD . /app
 
-EXPOSE 8000
+EXPOSE 8080
 
-ENTRYPOINT python /app/app.py runserver 172.16.83.13:8000
+ENTRYPOINT python /app/app.py runserver 0.0.0.0:8080
