@@ -9,6 +9,10 @@ RUN pip install Werkzeug==1.0.1
 
 ADD . /app
 
+RUN adduser testuser && chown -R testuser /app
+
 EXPOSE 8080
+
+USER testuser
 
 ENTRYPOINT python /app/app.py runserver 0.0.0.0:8080
