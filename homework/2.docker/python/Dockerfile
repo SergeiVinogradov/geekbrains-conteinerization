@@ -7,9 +7,9 @@ RUN pip install Jinja2==2.11.2
 RUN pip install MarkupSafe==1.1.1
 RUN pip install Werkzeug==1.0.1
 
-ADD . /app
+COPY . /app
 
-RUN adduser testuser && chown -R testuser /app
+RUN useradd -ms /bin/bash testuser && chown -R testuser /app
 
 EXPOSE 8080
 
