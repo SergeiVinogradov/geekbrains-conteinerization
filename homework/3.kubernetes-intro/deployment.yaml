@@ -23,4 +23,3 @@ spec:
         ports:
         - containerPort: 5900
           name: vnc
-          protocol: TCP
