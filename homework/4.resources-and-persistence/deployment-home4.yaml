@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homework4
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: homework4
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: homework4
+    spec:
+      initContainers:
+      - image: busybox
+        name: mount-permissions-fix
+        command: ["sh", "-c", "chmod 777 /data"]
+        volumeMounts:
+        - name: data
+          mountPath: /data
+      containers:
+      - image: postgres:10.13
+        name: postgres
+        ports:
+        - containerPort: 5432
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+        - name: config
+          mountPath: /etc/nginx/conf.d
+        - name: data
+          mountPath: /data
+      volumes:
+      - name: config
+        configMap:
+          name: homework4
+      - name: data
+        persistentVolumeClaim:
+          claimName: homework4
