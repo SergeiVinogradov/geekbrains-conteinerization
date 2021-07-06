@@ -34,14 +34,9 @@ spec:
                 name: postgres-secret
                 key: PASS
         volumeMounts:
-        - name: config
-          mountPath: /etc/nginx/conf.d
         - name: data
           mountPath: /var/lib/postgresql/data
       volumes:
-      - name: config
-        configMap:
-          name: homework4
-      - name: data
+        - name: data
         persistentVolumeClaim:
           claimName: homework4
