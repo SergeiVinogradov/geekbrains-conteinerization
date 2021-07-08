@@ -21,8 +21,13 @@ spec:
             - configMapRef:
                 name: redmine-config
           env:
-            - name: POSTGRES_PASSWORD
+            - name: REDMINE_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mysecret
                   key: PASS          
+            - name: REDMINE_SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: redmine-secret
+                  key: PASS         
