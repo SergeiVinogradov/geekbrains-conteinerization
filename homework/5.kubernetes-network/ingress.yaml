@@ -4,10 +4,6 @@ kind: Ingress
 metadata:
   name: my-ingress
 spec:
-  rules:
-  - host: my-redmine.local
-    http:
-      paths:
-      - backend:
-          serviceName: redmine-app
-          servicePort: 3000
+  backend:
+    serviceName: redmine-app
+    servicePort: 3000
