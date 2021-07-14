@@ -23,33 +23,16 @@ spec:
               containerPort: 9090
           volumeMounts:
             - name: config-volume
-              mountPath: /etc/rabbitmq
-            - name: data
+              mountPath: /etc/prometheus
+            - name: prometheus-data
               mountPath: /prometheus
       volumes:
         - name: config-volume
           configMap:
-            name: rabbitmq-config
-            items:
-              - key: rabbitmq.conf
-                path: rabbitmq.conf
-              - key: enabled_plugins
-                path: enabled_plugins
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                    - key: app
-                      operator: In
-                      values:
-                        - rabbitmq
-                topologyKey: kubernetes.io/hostname
-  volumeClaimTemplates:
+            name: prometheus-config
+    volumeClaimTemplates:
     - metadata:
-        name: data
+        name: prometheus-data
       spec:
         accessModes: ["ReadWriteOnce"]
         resources:
