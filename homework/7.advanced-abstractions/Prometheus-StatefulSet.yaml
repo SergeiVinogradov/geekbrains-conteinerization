@@ -2,61 +2,30 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: rabbitmq
+  name: prometheus
 spec:
-  serviceName: rabbitmq
-  replicas: 3
+  serviceName: prometheus
+  replicas: 1
   selector:
     matchLabels:
-      app: rabbitmq
+      app: prometheus
   template:
     metadata:
       labels:
-        app: rabbitmq
+        app: prometheus
     spec:
-      serviceAccount: rabbitmq
-      terminationGracePeriodSeconds: 10
+      serviceAccount: prometheus
       containers:
-        - name: rabbitmq-k8s
-          image: rabbitmq:3.7-management
-          env:
-            - name: MY_POD_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
-            - name: RABBITMQ_USE_LONGNAME
-              value: "true"
-            - name: RABBITMQ_NODENAME
-              value: "rabbit@$(MY_POD_IP)"
-            - name: K8S_SERVICE_NAME
-              value: "rabbitmq"
-            - name: RABBITMQ_ERLANG_COOKIE
-              value: "mycookie"
+        - name: prometheus-k8s
+          image: prom/prometheus:v2.19.2
           ports:
-            - name: amqp
-              protocol: TCP
-              containerPort: 5672
-            - name: admin
-              protocol: TCP
-              containerPort: 15672
-          livenessProbe:
-            exec:
-              command: ["rabbitmqctl", "status"]
-            initialDelaySeconds: 60
-            periodSeconds: 60
-            timeoutSeconds: 15
-          readinessProbe:
-            exec:
-              command: ["rabbitmqctl", "status"]
-            initialDelaySeconds: 20
-            periodSeconds: 60
-            timeoutSeconds: 10
-          imagePullPolicy: Always
+            - protocol: TCP
+              containerPort: 9090
           volumeMounts:
             - name: config-volume
               mountPath: /etc/rabbitmq
             - name: data
-              mountPath: /var/lib/rabbitmq
+              mountPath: /prometheus
       volumes:
         - name: config-volume
           configMap:
@@ -85,4 +54,4 @@ spec:
         accessModes: ["ReadWriteOnce"]
         resources:
           requests:
-            storage: 1Gi
+            storage: 5Gi
