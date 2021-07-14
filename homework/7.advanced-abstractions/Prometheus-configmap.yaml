@@ -1,4 +1,9 @@
-prometheus.yml: |
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+data:
   global:
     scrape_interval: 30s
   
